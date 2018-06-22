@@ -1,0 +1,5 @@
+divante_workflow_validation:
+    resource: "@DivanteWorkflowValidationBundle/Controller/"
+    type:     annotation
+    prefix:   /admin
+

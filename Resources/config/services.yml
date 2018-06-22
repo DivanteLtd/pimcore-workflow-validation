@@ -1,0 +1,47 @@
+services:
+    # default configuration for services in *this* file
+    _defaults:
+        # automatically injects dependencies in your services
+        autowire: true
+        # automatically registers your services as commands, event subscribers, etc.
+        autoconfigure: true
+        # this means you cannot fetch services directly from the container via $container->get()
+        # if you need to do this, you can override this setting on individual services
+        public: false
+
+    workflow_validation.validation_handler.default:
+      class: Divante\WorkflowValidationBundle\Validator\DefaultValidator
+
+    workflow_validation.validation_handler.localizedfields:
+      class: Divante\WorkflowValidationBundle\Validator\LocalizedfieldsValidator
+
+    workflow_validation.validation_handler_locator:
+      class: Symfony\Component\DependencyInjection\ServiceLocator
+      tags: ['container.service_locator']
+      arguments:
+        -
+          default: '@workflow_validation.validation_handler.default'
+          localizedfields: '@workflow_validation.validation_handler.localizedfields'
+
+    Divante\WorkflowValidationBundle\Validator\ValidatorManager:
+      arguments: ['@workflow_validation.validation_handler_locator']
+
+    # controllers are imported separately to make sure they're public
+    # and have a tag that allows actions to type-hint services
+    Divante\WorkflowValidationBundle\Controller\:
+        resource: '../../Controller'
+        public: true
+        tags: ['controller.service_arguments']
+    
+    Divante\WorkflowValidationBundle\EventListener\WorkflowListener:
+      tags:
+        - { name: kernel.event_subscriber }
+
+    Divante\WorkflowValidationBundle\Service\WorkflowValidationService: ~
+        
+# add more services, or override services that need manual wiring
+#    Divante\WorkflowValidationBundle\ExampleClass:
+#        arguments:
+#            - "@service_id"
+#            - "plain_value"
+#            - "%parameter%"

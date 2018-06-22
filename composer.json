@@ -1,0 +1,20 @@
+{
+  "name" : "divante-ltd/workflow-validation-bundle",
+  "description" : "Bundle adding dashboard validation for pimcore workflow",
+  "type" : "pimcore-bundle",
+  "keywords" : [
+    "Worfklow-validation pimcore 5"
+  ],
+  "autoload": {
+    "psr-4": {
+      "Divante\\WorkflowValidationBundle\\": "/"
+    }
+  },
+  "extra" : {
+    "pimcore": {
+      "bundles": [
+        "Divante\\WorkflowValidationBundle\\DivanteWorkflowValidationBundle"
+      ]
+    }
+  }
+}

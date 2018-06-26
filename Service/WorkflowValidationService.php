@@ -134,7 +134,7 @@ class WorkflowValidationService
     {
         $actions = [];
 
-        foreach ($workflow->getActions() as $action) {
+        foreach ($workflow->getActions() ?? [] as $action) {
             $actions[] = [
                 'name'    => $action['name'],
                 'classes' => [],

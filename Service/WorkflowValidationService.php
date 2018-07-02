@@ -35,13 +35,13 @@ class WorkflowValidationService
             $validation = $this->createWorkflowValidation($workflow);
         }
 
-        $actions = $workflow->getActions();
+        $actions = $workflow->getActions() ?? [];
         foreach ($actions as &$action) {
             $action['validation'] = ['classes' => []];
         }
 
         $workflowSubject = $workflow->getWorkflowSubject();
-        if (in_array('object', $workflowSubject['types'])) {
+        if (is_array($workflowSubject) && in_array('object', $workflowSubject['types'])) {
             foreach ($actions as &$action) {
                 foreach ($workflowSubject['classes'] as $classId) {
                     $config = $validation->getActionClassConfig($action['name'], $classId);
@@ -134,7 +134,7 @@ class WorkflowValidationService
     {
         $actions = [];
 
-        foreach ($workflow->getActions() as $action) {
+        foreach ($workflow->getActions() ?? [] as $action) {
             $actions[] = [
                 'name'    => $action['name'],
                 'classes' => [],
@@ -142,7 +142,7 @@ class WorkflowValidationService
         }
 
         $workflowSubject = $workflow->getWorkflowSubject();
-        if (in_array('object', $workflowSubject['types'])) {
+        if (is_array($workflowSubject) && in_array('object', $workflowSubject['types'])) {
             foreach ($actions as &$action) {
                 foreach ($workflowSubject['classes'] as $classId) {
                     $action['classes'][] = [

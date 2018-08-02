@@ -84,7 +84,7 @@ class WorkflowValidation extends AbstractModel
     {
         $config = null;
 
-        foreach ($this->getActions() as $action) {
+        foreach ($this->getActions() ?? [] as $action) {
             if ($action['name'] === $name) {
                 $config = $action;
                 break;
@@ -96,17 +96,17 @@ class WorkflowValidation extends AbstractModel
 
     /**
      * @param string $actionName
-     * @param int $classId
+     * @param string|int $classId
      * @return array|null
      */
-    public function getActionClassConfig(string $actionName, int $classId)
+    public function getActionClassConfig(string $actionName, $classId)
     {
         $config = null;
 
         $actionConfig = $this->getActionConfig($actionName);
         if (is_array($actionConfig)) {
             foreach ($actionConfig['classes'] as $class) {
-                if ($class['id'] === $classId) {
+                if ($class['id'] == $classId) {
                     $config = $class;
                     break;
                 }
